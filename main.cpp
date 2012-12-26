@@ -53,7 +53,7 @@ static void move_flakes()
         if(flakes[i].y > screen->h -1)
         {
             flakes[i].x = rand() % screen->w;
-            flakes[i].y = 0);
+            flakes[i].y = 0;
         }
     }
 
@@ -84,6 +84,13 @@ static void draw_flakes()
 
 }
 
+static void cleanup()
+{
+
+   SDL_QuitSubSystem(SDL_INIT_VIDEO);
+}
+
+
 int main ( int argc, char** argv )
 {
 
@@ -95,12 +102,19 @@ int main ( int argc, char** argv )
     }
 
     // make sure SDL cleans up before exit
-    atexit(SDL_Quit);
+    atexit(cleanup);
+
+
+    const SDL_VideoInfo* sdl_video_info = SDL_GetVideoInfo();
+    printf("Current video resolution is %i x %i pixels\n", sdl_video_info->current_w, sdl_video_info->current_h);
+    int height = sdl_video_info->current_h;
+    int width =  sdl_video_info->current_w;
+
 
     // create a new window
-    screen = SDL_SetVideoMode(640, 480, 16,
-                                           SDL_HWSURFACE|SDL_DOUBLEBUF);
-    if ( !screen )
+    screen = SDL_SetVideoMode(width, height, 16,
+                                           SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_FULLSCREEN);
+    if ( screen == NULL )
     {
         printf("Unable to set 640x480 video: %s\n", SDL_GetError());
         return 1;
@@ -129,7 +143,7 @@ int main ( int argc, char** argv )
     // program main loop
     bool done = false;
 
-    const int FPS = 120;
+    const int FPS = 30;
     const int framems = 1000 / FPS;
     while (!done)
     {
@@ -199,3 +213,5 @@ int main ( int argc, char** argv )
     return 0;
 
 }
+
+
