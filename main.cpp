@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-const int NUM_FLAKES = 50;
+const int NUM_FLAKES = 100;
 const int MAX_SPEED = 3;
 
 
@@ -53,7 +53,7 @@ static void move_flakes()
         if(flakes[i].y > screen->h -1)
         {
             flakes[i].x = rand() % screen->w;
-            flakes[i].y = rand() % screen->h;
+            flakes[i].y = 0);
         }
     }
 
@@ -107,14 +107,22 @@ int main ( int argc, char** argv )
     }
 
     // load an image
-    flake = SDL_LoadBMP("snow_flake.bmp");
-    if (!flake)
+    SDL_Surface *temp;
+    temp = SDL_LoadBMP("snow_flake.bmp");
+    if (!temp)
     {
         printf("Unable to load bitmap: %s\n", SDL_GetError());
         return 1;
     }
 
-    SDL_SetColorKey(flake, SDL_SRCCOLORKEY, (Uint16) SDL_MapRGB(flake->format, 0, 0, 0));
+    SDL_SetColorKey(temp, SDL_SRCCOLORKEY | SDL_RLEACCEL , (Uint16) SDL_MapRGB(temp->format, 0, 0, 0));
+    flake = SDL_DisplayFormat(temp);
+    if (flake == NULL)
+    {
+        printf("Unable to convert bitmap.\n");
+    }
+    SDL_FreeSurface(temp);
+
     init_flakes();
 
 
@@ -165,7 +173,7 @@ int main ( int argc, char** argv )
 
         draw_flakes();
 
-        SDL_UpdateRect(screen, 0, 0, 0, 0);
+        SDL_Flip(screen);
 
         move_flakes();
 
