@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-const int NUM_FLAKES = 100;
+const int NUM_FLAKES = 150;
 const int MAX_SPEED = 3;
 
 

@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1356377474 source:/home/peter/Projects/Snow/main.cpp
+1356885279 source:/home/peter/Projects/Snow/main.cpp
 	<cstdlib>
 	<stdlib.h>
 	<SDL/SDL.h>
